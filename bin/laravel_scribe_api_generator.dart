@@ -1,13 +1,11 @@
-import 'dart:io';
-
 import 'package:args/args.dart';
-import 'package:laravel_scribe_api_generator/base.dart';
-import "package:yaml/yaml.dart";
+import 'package:laravel_scribe_api_generator/generator.dart';
 
 const String version = '0.0.1';
 
 ArgParser buildParser() {
   return ArgParser()
+    ..addCommand('generate')
     ..addFlag(
       'help',
       abbr: 'h',
@@ -33,17 +31,17 @@ void printUsage(ArgParser argParser) {
 }
 
 void main(List<String> arguments) async {
-  for (var file in Directory('examples/yaml').listSync()) {
-    final f = File(file.path);
-    final mapData = loadYaml(f.readAsStringSync());
-    // YamlList d = YamlList().first
-    print(mapData['endpoints'][2]);
-  }
   final ArgParser argParser = buildParser();
-  try {
-    final ArgResults results = argParser.parse(arguments);
-    bool verbose = false;
+  final ArgResults results = argParser.parse(arguments);
+  bool verbose = false;
 
+  // Process the parsed arguments.
+  if (results.command?.name == 'generate') {
+    final generator = Generator();
+    generator();
+    return;
+  }
+  try {
     // Process the parsed arguments.
     if (results.flag('help')) {
       printUsage(argParser);
