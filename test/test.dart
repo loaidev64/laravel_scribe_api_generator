@@ -9,7 +9,8 @@ final class User {
   /// [page] for pagination
   ///
   Future<dynamic> getUsers({required int? page}) async {
-    final response = await dioHelper.dio.get('users');
+    final response =
+        await dioHelper.dio.get('users', queryParameters: {'page': page});
   }
 
   /// create a new user
@@ -30,7 +31,13 @@ final class User {
       String? emailVerifiedAt,
       required String password,
       String? rememberToken}) async {
-    final response = await dioHelper.dio.post('users');
+    final response = await dioHelper.dio.post('users', data: {
+      'name': name,
+      'email': email,
+      'email_verified_at': emailVerifiedAt,
+      'password': password,
+      'remember_token': rememberToken
+    });
   }
 
   /// get a single user
@@ -62,7 +69,13 @@ final class User {
       String? emailVerifiedAt,
       required String password,
       String? rememberToken}) async {
-    final response = await dioHelper.dio.put('users/$id');
+    final response = await dioHelper.dio.put('users/$id', data: {
+      'name': name,
+      'email': email,
+      'email_verified_at': emailVerifiedAt,
+      'password': password,
+      'remember_token': rememberToken
+    });
   }
 
   /// delete a specific user
