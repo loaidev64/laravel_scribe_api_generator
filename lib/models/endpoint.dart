@@ -24,6 +24,9 @@ class Endpoint {
     required this.responses,
   });
 
+  List<Parameter> get allParams =>
+      urlParameters + queryParameters + bodyParameters;
+
   factory Endpoint.fromJson(Map<String, dynamic> json) {
     return Endpoint(
       httpMethods: List<String>.from(json['httpMethods']),

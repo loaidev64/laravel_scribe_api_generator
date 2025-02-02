@@ -7,10 +7,18 @@ final class EndpointMethod extends BaseStub {
 
   static const description = '{{ description }}';
 
+  static const params = '{{ params }}';
+
+  static const method = '{{ method }}';
+
+  static const url = '{{ url }}';
+
   @override
   String get content => '''
 /// $description
-Future<dynamic> $name() async{
+Future<dynamic> $name($params) async{
+    final response = await dioHelper.dio.$method('$url');
+
     
 }
 
