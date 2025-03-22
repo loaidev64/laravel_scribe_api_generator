@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Response {
   final int status;
   final dynamic content;
@@ -16,7 +18,7 @@ class Response {
   factory Response.fromJson(Map<String, dynamic> json) {
     return Response(
       status: json['status'],
-      content: json['content'],
+      content: json['content'] != null ? jsonDecode(json['content']) : null,
       headers: json['headers'] is List
           ? {}
           : Map<String, String>.from(json['headers']),

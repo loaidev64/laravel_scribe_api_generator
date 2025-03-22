@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:args/args.dart';
 import 'package:laravel_scribe_api_generator/generator.dart';
 
@@ -37,6 +39,7 @@ void main(List<String> arguments) async {
 
   // Process the parsed arguments.
   if (results.command?.name == 'generate') {
+    Directory('test').deleteSync(recursive: true);
     final generator = Generator();
     generator();
     return;

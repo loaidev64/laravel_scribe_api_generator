@@ -1,30 +1,34 @@
+import 'package:laravel_scribe_api_generator/engines/model_engine.dart';
 import 'package:laravel_scribe_api_generator/models/endpoint.dart';
 import 'package:recase/recase.dart';
 
 import '../generator.dart';
 import '../helpers/stub_helper.dart';
 import '../helpers/stubs/endpoint_method.dart';
-import '../models/api_document.dart';
 
 final class EndpointMethodEngine {
   final List<Endpoint> endpoints;
 
-  EndpointMethodEngine(this.endpoints);
+  final String apiServiceName;
 
-  String generateMethods() => endpoints
-      .map((element) => helper(
-            Stubs.endpointMethod,
-            data: {
-              EndpointMethod.name: element.metadata.title.camelCase,
-              EndpointMethod.description: _generateDescription(element),
-              EndpointMethod.params: _generateParams(element),
-              EndpointMethod.method: element.httpMethods.first.toLowerCase(),
-              EndpointMethod.url: _generateUrl(element),
-              EndpointMethod.data: _generateData(element),
-              EndpointMethod.queryParameters: _generateQueryParameters(element),
-            },
-          ))
-      .join('\n');
+  EndpointMethodEngine(this.endpoints, {required this.apiServiceName});
+
+  String generateMethods() => endpoints.map((element) {
+        final modelEngine = ModelEngine(element.responses);
+        modelEngine.generate(apiServiceName, element.metadata);
+        return helper(
+          Stubs.endpointMethod,
+          data: {
+            EndpointMethod.name: element.metadata.title.camelCase,
+            EndpointMethod.description: _generateDescription(element),
+            EndpointMethod.params: _generateParams(element),
+            EndpointMethod.method: element.httpMethods.first.toLowerCase(),
+            EndpointMethod.url: _generateUrl(element),
+            EndpointMethod.data: _generateData(element),
+            EndpointMethod.queryParameters: _generateQueryParameters(element),
+          },
+        );
+      }).join('\n');
 
   String _generateParams(Endpoint element) {
     String params = '';

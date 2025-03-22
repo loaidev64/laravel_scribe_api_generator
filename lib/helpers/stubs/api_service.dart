@@ -11,10 +11,10 @@ final class ApiServiceStub extends BaseStub {
 
   @override
   String get content => '''
-import 'dio_helper.dart';
+import '../dio_helper.dart';
 
 /// $description
-final class $name {
+final class ${name}Service {
 
     final dioHelper = DioHelper();
 
